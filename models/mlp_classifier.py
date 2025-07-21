@@ -18,9 +18,9 @@ class MLPClassifier(torch.nn.Module):
         super().__init__()
         layers = []
         layers.append(torch.nn.Flatten())
-        layers.append(torch.nn.Linear(days * pricepoints, 64))
+        layers.append(torch.nn.Linear(days * pricepoints, 256))
         layers.append(torch.nn.ReLU())
-        layers.append(torch.nn.Linear(64, num_classes))
+        layers.append(torch.nn.Linear(256, num_classes))
         self.model = torch.nn.Sequential(*layers)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

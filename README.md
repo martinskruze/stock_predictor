@@ -20,3 +20,16 @@ Each record consists of following data points
 ```
 pip install -r requirements.txt
 ```
+
+### train models
+```
+python3 train.py --model_name linear 
+python3 train.py --model_name mlp  
+python3 train.py --model_name mlp_deep 
+python3 train.py --model_name mlp_deep_residual
+```
+
+### check on progress
+```
+tensorboard --logdir logs
+```

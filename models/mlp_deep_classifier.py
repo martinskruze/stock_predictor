@@ -6,7 +6,7 @@ class MLPClassifierDeep(torch.nn.Module):
         days: int = 30,
         pricepoints: int = 6,
         num_classes: int = 7,
-        hidden_dim: int = 128,
+        hidden_dim: int = 256,
         num_layers: int = 4,
     ):
         """

@@ -14,8 +14,8 @@ from data.historical_stock_dataset import load_stock_data
 def train(
     exp_dir: str = "logs",
     model_name: str = "linear",
-    num_epoch: int = 50,
-    lr: float = 1e-3,
+    num_epoch: int = 100,
+    lr: float = 1e-4,
     batch_size: int = 256,
     seed: int = 2024,
     weight_decay: float = 0.01,
@@ -41,6 +41,7 @@ def train(
     # note: the grader uses default kwargs, you'll have to bake them in for the final submission
     model = load_model(model_name, **kwargs)
     model = model.to(device)
+    logger.add_graph(model, torch.zeros(1, 30, 6).to(device)) 
     model.train()
 
     train_data, val_data = load_stock_data(batch_size=batch_size, num_workers=2, shuffle=True)
@@ -98,15 +99,13 @@ def train(
 
         logger.add_scalar('train_accuracy', epoch_train_acc, global_step)
         logger.add_scalar('val_accuracy', epoch_val_acc, global_step)
-
-        # print on first, last, every 10th epoch
-        if epoch == 0 or epoch == num_epoch - 1 or (epoch + 1) % 10 == 0:
-            print(
-                f"Epoch {epoch + 1:2d} / {num_epoch:2d}: "
-                f"train_loss={epoch_train_loss:.4f} "
-                f"train_acc={epoch_train_acc:.4f} "
-                f"val_acc={epoch_val_acc:.4f}"
-            )
+    
+        print(
+            f"Epoch {epoch + 1:2d} / {num_epoch:2d}: "
+            f"train_loss={epoch_train_loss:.4f} "
+            f"train_acc={epoch_train_acc:.4f} "
+            f"val_acc={epoch_val_acc:.4f}"
+        )
 
     # save and overwrite the model in the root directory for grading
     save_model(model)
@@ -120,8 +119,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--exp_dir", type=str, default="logs")
     parser.add_argument("--model_name", type=str, required=True, choices=["linear", "mlp", "mlp_deep", "mlp_deep_residual"])
-    parser.add_argument("--num_epoch", type=int, default=50)
-    parser.add_argument("--lr", type=float, default=1e-3)
+    parser.add_argument("--num_epoch", type=int, default=100)
+    parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--seed", type=int, default=2024)
     parser.add_argument("--weight_decay", type=float, default=0.01, help="Weight decay for AdamW optimizer")
     parser.add_argument("--betas", type=lambda s: tuple(map(float, s.split(','))), default=(0.9, 0.999), help="Betas for AdamW optimizer, e.g. '0.9,0.999'")
