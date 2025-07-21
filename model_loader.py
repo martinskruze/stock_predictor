@@ -66,6 +66,8 @@ def load_model(model_name: str, with_weights: bool = False, **model_kwargs):
             ) from e
 
     model_size_mb = calculate_model_size_mb(r)
+    num_params = sum(p.numel() for p in r.parameters())
+    print(f"Number of parameters: {num_params}")
     print(f"Model size: {model_size_mb:.4f} MB")
 
     return r

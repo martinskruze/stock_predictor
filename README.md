@@ -33,3 +33,11 @@ python3 train.py --model_name mlp_deep_residual
 ```
 tensorboard --logdir logs
 ```
+
+## predict from models
+```
+python3 predict.py --model_name linear
+python3 predict.py --model_name mlp
+python3 predict.py --model_name mlp_deep
+python3 predict.py --model_name mlp_deep_residual
+```
